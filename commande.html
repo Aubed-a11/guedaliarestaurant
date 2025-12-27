@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Commander | Guédalia Restaurant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --orange:#ff8c1a;
+  --orange-dark:#e67300;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+
+body{background:#f5f5f5}
+
+/* HEADER */
+header{
+  background:var(--orange);
+  color:#fff;
+  padding:15px;
+  text-align:center;
+  font-weight:bold;
+}
+
+/* PRODUITS */
+.category{
+  padding:15px;
+}
+
+.category h2{
+  margin-bottom:10px;
+  color:var(--orange-dark);
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:15px;
+}
+
+.product-card{
+  background:#fff;
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.product-card img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+.product-card h3{margin:8px 0}
+.product-card p{color:var(--orange-dark);font-weight:bold}
+
+.product-card button{
+  margin-top:8px;
+  background:var(--orange);
+  border:none;
+  color:#fff;
+  padding:8px;
+  width:100%;
+  border-radius:8px;
+}
+
+/* PANIER */
+.cart{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#fff;
+  border-top:3px solid var(--orange);
+  padding:10px;
+}
+
+.cart h3{text-align:center;color:var(--orange)}
+.cart ul{list-style:none;max-height:150px;overflow:auto}
+.cart li{
+  display:flex;
+  justify-content:space-between;
+  margin:6px 0;
+}
+
+.total{
+  font-weight:bold;
+  text-align:center;
+  margin-top:10px;
+}
+
+/* BOUTONS */
+.actions button{
+  width:100%;
+  margin-top:8px;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  font-size:1rem;
+  color:#fff;
+}
+
+.whatsapp{background:#25d366}
+.pay{background:var(--orange-dark)}
+</style>
+</head>
+<body>
+
+<header>Commander - Guédalia Restaurant</header>
+
+<!-- Div pour afficher le menu par catégorie -->
+<div id="menu"></div>
+
+<div class="cart">
+  <h3>🛒 Panier</h3>
+  <ul id="cartList"></ul>
+  <div class="total">Total : <span id="total">0</span> FCFA</div>
+
+  <div class="actions">
+    <button class="pay" onclick="pay()">💳 Payer Mobile Money</button>
+    <button class="whatsapp" onclick="sendWhatsApp()">📲 Commander sur WhatsApp</button>
+  </div>
+</div>
+
+<script>
+let products = {
+  entrees: [
+    {name:"Salade César", price:1200, img:"https://images.unsplash.com/photo-1556911073-52527ac4370e"},
+    {name:"Soupe du jour", price:1000, img:"https://images.unsplash.com/photo-1600891964043-1f4e2b7a1e4c"}
+  ],
+  chawarma: [
+    {name:"Chawarma Poulet", price:1500, img:"https://images.unsplash.com/photo-1599785209707-1b3a5d7bb2b3"},
+    {name:"Chawarma Viande", price:1700, img:"https://images.unsplash.com/photo-1601924582975-4c5e2f1b3d7a"}
+  ],
+  sandwichs: [
+    {name:"Sandwich Poulet", price:1800, img:"https://images.unsplash.com/photo-1606755962778-7c8e2f0f3c8a"},
+    {name:"Sandwich Thon", price:1600, img:"https://images.unsplash.com/photo-1601924582975-8a2f1b3d4c5b"},
+    {name:"Sandwich Végé", price:1500, img:"https://images.unsplash.com/photo-1617196033301-4c9e2f3b6b3f"}
+  ],
+  plats: [
+     {name:"Poulet braisé", price:3000, img:"https://images.unsplash.com/photo-1600891964599-f61ba0e24092"},
+   {name:"Brochette de bœuf", price:3500, img:"https://images.unsplash.com/photo-1627396798905-2c3d7cd3d95e"}, 
+   {name:"Riz au poisson", price:3200, img:"https://images.unsplash.com/photo-1621609763788-1d5e8b43b34a"} ],
+    burgers: 
+    [ {name:"Burger Cheese", price:2500, img:"https://images.unsplash.com/photo-1550547660-d9450f859349"},
+     {name:"Burger Bacon", price:2800, img:"https://images.unsplash.com/photo-1606755962778-9f0d5f2c6b1f"}, 
+     {name:"Burger Végé", price:2200, img:"https://images.unsplash.com/photo-1617196033301-3d8fa1b8c6be"} ],
+      pizzas: [ {name:"Pizza Royale", price:3500, img:"https://images.unsplash.com/photo-1593560708920-61dd98c46a4e"},
+       {name:"Pizza Margherita", price:3000, img:"https://images.unsplash.com/photo-1601924582975-1aee7f0a242a"}, 
+       {name:"Pizza Pepperoni", price:3200, img:"https://images.unsplash.com/photo-1594007652022-8b8aa1a7c75c"} ],
+        specialitesAfricaines: [ {name:"Foutou et sauce", price:4000, img:"https://images.unsplash.com/photo-1601924582975-5b6c7a3d4e2f"},
+         {name:"Attiéké poisson", price:3800, img:"https://images.unsplash.com/photo-1601924582975-6c7d8f3b4e1c"} ], 
+         pates: [ {name:"Spaghetti bolognaise", price:2500, img:"https://images.unsplash.com/photo-1601924582975-1e2f3b4c5d6a"}, 
+         {name:"Penne Alfredo", price:2700, img:"https://images.unsplash.com/photo-1601924582975-2f3c4b5d6e7f"} ],
+          desserts: [ {name:"Crêpe Nutella", price:1200, img:"https://images.unsplash.com/photo-1601924582975-2b3e1f2d4c6b"}, 
+          {name:"Crêpe Fraise", price:1300, img:"https://images.unsplash.com/photo-1601924582975-3c4d2f1e5b6c"}, 
+          {name:"Yaourt", price:800, img:"https://images.unsplash.com/photo-1601924582975-1f3d2c4b5a6e"}, 
+          {name:"Dèguè", price:1000, img:"https://images.unsplash.com/photo-1601924582975-4e5f3d2b6c7a"} ], 
+          boissons: [ {name:"Coca Cola", price:800, img:"https://images.unsplash.com/photo-1601924582975-7dbe2b6e3a44"},
+           {name:"Eau minérale", price:500, img:"https://images.unsplash.com/photo-1584270354949-8e35e0cfce0a"} ], 
+           jus: [ {name:"Jus d'orange", price:1000, img:"https://images.unsplash.com/photo-1589927986089-35812388d1f4"}, 
+           {name:"Jus de mangue", price:1200, img:"https://images.unsplash.com/photo-1601924582975-2c3b4d5e6f7a"} ],
+            consoBouteilles: [ {name:"Bière locale", price:1500, img:"https://images.unsplash.com/photo-1601924582975-3d4e5f6a7b8c"},
+             {name:"Eau gazeuse", price:1000, img:"https://images.unsplash.com/photo-1601924582975-4e5f6a7b8c9d"} ],
+              vins: [ {name:"Vin Rouge", price:5000, img:"https://images.unsplash.com/photo-1570802106193-3a39e9a7f6c1"},
+               {name:"Vin Blanc", price:5200, img:"https://images.unsplash.com/photo-1584270354949-9d8f0f3b2c4a"},
+                {name:"Rosé", price:4800, img:"https://images.unsplash.com/photo-1601924582975-7c1f3b2d4e1b"} ]
+ 
+};
+
+let cart=[];
+
+function displayMenu() {
+  const menuDiv = document.getElementById("menu");
+  for (let category in products) {
+    let categoryDiv = document.createElement("div");
+    categoryDiv.classList.add("category");
+
+    let title = document.createElement("h2");
+    title.textContent = category.toUpperCase();
+    categoryDiv.appendChild(title);
+
+    let productsDiv = document.createElement("div");
+    productsDiv.classList.add("products");
+
+    products[category].forEach(product => {
+      let card = document.createElement("div");
+      card.classList.add("product-card");
+
+      card.innerHTML = `
+        <img src="${product.img}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>${product.price} FCFA</p>
+        <button onclick="add('${category}', '${product.name}')">Commander</button>
+      `;
+      productsDiv.appendChild(card);
+    });
+
+    categoryDiv.appendChild(productsDiv);
+    menuDiv.appendChild(categoryDiv);
+  }
+}
+
+// Fonction pour ajouter au panier
+function add(category, productName){
+  const product = products[category].find(p=>p.name===productName);
+  let item = cart.find(c=>c.name===product.name);
+  if(item) item.qty++;
+  else cart.push({...product, qty:1});
+  renderCart();
+}
+
+function renderCart(){
+  let list=document.getElementById("cartList");
+  let total=0;
+  list.innerHTML="";
+  cart.forEach(c=>{
+    total+=c.price*c.qty;
+    list.innerHTML+=`<li>${c.name} x${c.qty} <span>${c.price*c.qty} FCFA</span></li>`;
+  });
+  document.getElementById("total").innerText=total;
+}
+
+function sendWhatsApp(){
+  let msg="Bonjour, je souhaite commander:%0A";
+  cart.forEach(c=>{
+    msg+=`${c.name} x${c.qty} = ${c.price*c.qty} FCFA%0A`;
+  });
+  msg+=`Total: ${document.getElementById("total").innerText} FCFA`;
+  window.open(`https://wa.me/229XXXXXXXX?text=${msg}`,"_blank");
+}
+
+function pay(){
+  alert("Effectuez le paiement Mobile Money puis confirmez sur WhatsApp");
+}
+
+// Affichage du menu
+displayMenu();
+</script>
+
+</body>
+</html>
