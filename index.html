@@ -11,176 +11,223 @@
 :root {
   --orange: #f28c28;
   --orange-dark: #d97706;
+  --bg: #ffffff;
+  --text: #333;
+  --header-bg: #fff;
+  --hero-overlay: rgba(242,140,40,0.15);
+  --btn-bg: var(--orange);
+  --btn-text: #fff;
+  --brand-bg: #fff;
+  --brand-text: var(--orange-dark);
+  --shadow: rgba(0,0,0,0.1);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
+/* GÉNÉRAL */
 body {
-  background: #f7f7f7;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  transition: all 0.3s ease;
 }
 
 /* HEADER */
 header {
-  background: var(--orange);
-  padding: 15px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+  background: var(--header-bg);
+  box-shadow: 0 3px 15px var(--shadow);
 }
 
-header h1 {
-  color: #fff;
-  font-size: 1.3rem;
+.header-box {
+  background: #fffaf3;
+  border-left: 5px solid var(--orange);
+  padding: 20px 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 5px 15px var(--shadow);
+}
+
+.header-box h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--orange-dark);
+}
+
+.header-box h2 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+  color: #555;
+  line-height: 1.4;
 }
 
 /* HERO */
 .hero {
   position: relative;
   min-height: 100vh;
-  background: url("https://images.unsplash.com/photo-1600891964599-f61ba0e24092") center/cover no-repeat;
-  padding: 30px 15px;
+  background: url("guedalia-bg.jpg") center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 15px 40px;
   text-align: center;
 }
 
-/* OVERLAY */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.55);
+  background: var(--hero-overlay);
+  z-index: 0;
 }
 
-/* CONTENU AU DESSUS */
 .hero * {
   position: relative;
   z-index: 1;
 }
 
-/* TEXTE */
-.hero h2 {
-  color: #fff;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* NOM RESTO */
+/* NOM RESTAURANT */
 .brand {
   display: inline-block;
-  background: #fff;
-  color: var(--orange-dark);
-  padding: 6px 20px;
-  border-radius: 4px;
+  background: var(--brand-bg);
+  color: var(--brand-text);
+  padding: 12px 35px;
+  border-radius: 10px;
   margin-bottom: 30px;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
+  font-weight: 700;
   border: 2px solid var(--orange);
+  box-shadow: 0 5px 15px var(--shadow);
+  opacity: 0;
+  animation: brandPop 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation-delay: 0.4s;
 }
 
-/* BOUTONS */
+/* BOUTONS VERTICAUX */
 .buttons {
-  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  background: var(--orange);
-  color: #fff;
+  gap: 10px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
   text-decoration: none;
   font-weight: bold;
-  padding: 15px;
-  margin: 12px auto;
-  max-width: 320px;
+  padding: 12px 20px;
+  width: 250px;
   border-radius: 10px;
-  transition: 0.3s;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px var(--shadow);
 }
 
 .btn:hover {
   background: var(--orange-dark);
-  transform: scale(1.04);
+  transform: scale(1.08);
+  box-shadow: 0 10px 25px var(--shadow);
 }
 
 .btn i {
   font-size: 1.2rem;
 }
 
+.btn:nth-child(1) { animation-delay: 0.6s; }
+.btn:nth-child(2) { animation-delay: 0.8s; }
+.btn:nth-child(3) { animation-delay: 1s; }
+.btn:nth-child(4) { animation-delay: 1.2s; }
+.btn:nth-child(5) { animation-delay: 1.4s; }
+.btn:nth-child(6) { animation-delay: 1.6s; }
+.btn:nth-child(7) { animation-delay: 1.8s; }
+
 /* FOOTER */
 footer {
-  background: #fff;
-  padding: 12px;
+  background: var(--brand-bg);
+  padding: 15px;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  color: var(--text);
+  box-shadow: 0 -3px 10px var(--shadow);
 }
 
 footer a {
   color: var(--orange);
   text-decoration: none;
 }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes brandPop {
+  0% { opacity:0; transform:scale(0.85); box-shadow:0 0 0 rgba(242,140,40,0); }
+  70% { opacity:1; transform:scale(1.05); box-shadow:0 0 25px rgba(242,140,40,0.6); }
+  100% { transform:scale(1); box-shadow:0 0 10px rgba(242,140,40,0.3); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .header-box h1 { font-size: 1.4rem; }
+  .header-box h2 { font-size: 0.95rem; }
+  .brand { font-size: 1.5rem; padding: 10px 25px; }
+  .btn { padding: 10px 16px; font-size: 0.9rem; width: 220px; }
+}
+
+@media (max-width: 480px) {
+  .buttons { flex-direction: column; gap: 10px; }
+  .hero { padding: 100px 10px 30px; }
+}
 </style>
 </head>
 
 <body>
 
-
 <header>
-  <h1>Guédalia Restaurant</h1>
+  <div class="header-box">
+    <h1>Bienvenue à Guédalia Restaurant</h1>
+    <h2>Le goût authentique<br>de la bonne cuisine</h2>
+  </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
-  <h2>Le goût authentique<br>de la bonne cuisine</h2>
-
   <div class="brand">Guédalia</div>
 
   <div class="buttons">
-    <a href="#menu" class="btn" onclick="commander()">
-      <i class="fa-solid fa-cart-shopping"></i>
-      Commandez en ligne
-    </a>
-
-    <a href="https://instagram.com" target="_blank" class="btn">
-      <i class="fab fa-instagram"></i>
-      Instagram
-    </a>
-
-    <a href="https://facebook.com" target="_blank" class="btn">
-      <i class="fab fa-facebook"></i>
-      Facebook
-    </a>
-
-    <a href="#contact" class="btn" onclick="localisation()">
-      <i class="fa-solid fa-location-dot"></i>
-      Trouvez-nous
-    </a>
-
-    <a href="https://wa.me/229XXXXXXXX" target="_blank" class="btn">
-      <i class="fab fa-whatsapp"></i>
-      Contactez-nous
-    </a>
+    <a href="commande.html" class="btn"><i class="fa-solid fa-cart-shopping"></i> Commandez en ligne</a>
+    <a href="menu/menu-guedalia.pdf" class="btn" download><i class="fa-solid fa-file-pdf"></i> Télécharger le menu</a>
+    <a href="tel:+2290197073245" class="btn"><i class="fa-solid fa-phone"></i> Appeler maintenant</a>
+    <a href="https://wa.me/2290197073245" target="_blank" class="btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    <a href="https://www.facebook.com/share/1BGGYFkU4f/?mibextid=wwXIfr" target="_blank" class="btn"><i class="fab fa-facebook"></i> Facebook</a>
+    <a href="https://www.instagram.com/share/1BGGYFkU4f/?mibextid=wwXIfr" target="_blank" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
+    <a href="#" class="btn" onclick="localisation()"><i class="fa-solid fa-location-dot"></i> Trouvez-nous</a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
-  <p>
-    Menu Guédalia Restaurant · 
-    <a href="#">Plus d’infos</a>
-  </p>
+  <p>© Guédalia Restaurant · <a href="#">Plus d’infos</a></p>
 </footer>
 
 <script>
-/* ===== JAVASCRIPT ===== */
-function commander() {
-  alert("Redirection vers le menu Guédalia 🍽️");
-}
-
 function localisation() {
-  alert("Ouverture de la localisation 📍");
+  window.open(
+    "https://www.google.com/maps/place/6%C2%B027'25.6%22N+2%C2%B021'16.3%22E/@6.4571133,2.3519457,17z",
+    "_blank"
+  );
 }
 </script>
 
