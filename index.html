@@ -17,64 +17,70 @@
   --hero-overlay: rgba(242,140,40,0.15);
   --btn-bg: var(--orange);
   --btn-text: #fff;
-  --brand-bg: #fff;
-  --brand-text: var(--orange-dark);
   --shadow: rgba(0,0,0,0.1);
 }
 
-/* GÉNÉRAL */
+/* RESET */
+* {
+  box-sizing: border-box;
+}
+
+/* BODY */
 body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-  transition: all 0.3s ease;
 }
 
 /* HEADER */
 header {
+  min-height: 140px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 180px;
-  background: var(--header-bg);
+  justify-content: center;
+  padding: 20px;
   box-shadow: 0 3px 15px var(--shadow);
 }
 
 .header-box {
+  max-width: 650px;
+  width: 100%;
   background: #fffaf3;
   border-left: 5px solid var(--orange);
-  padding: 20px 25px;
-  border-radius: 12px;
+  padding: 20px;
+  border-radius: 14px;
   text-align: center;
-  box-shadow: 0 5px 15px var(--shadow);
 }
 
 .header-box h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin: 0 0 8px;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  margin-bottom: 8px;
   color: var(--orange-dark);
 }
 
 .header-box h2 {
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
   font-weight: 400;
-  margin: 0;
   color: #555;
-  line-height: 1.4;
 }
 
 /* HERO */
 .hero {
+  min-height: 100svh; /* meilleur que 100vh sur mobile */
+  background-image: url("guedalia-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: scroll;
+
   position: relative;
-  min-height: 100vh;
-  background: url("guedalia-bg.jpg") center/cover no-repeat;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 120px 15px 40px;
+
+  padding: clamp(90px, 12vw, 140px) 15px 50px;
   text-align: center;
 }
 
@@ -83,38 +89,35 @@ header {
   position: absolute;
   inset: 0;
   background: var(--hero-overlay);
-  z-index: 0;
 }
 
-.hero * {
+.hero > * {
   position: relative;
   z-index: 1;
 }
 
-/* NOM RESTAURANT */
+/* BRAND */
 .brand {
-  display: inline-block;
-  background: var(--brand-bg);
-  color: var(--brand-text);
-  padding: 12px 35px;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  font-size: 1.8rem;
+  font-size: clamp(1.4rem, 4vw, 2rem);
   font-weight: 700;
+  background: #fff;
+  color: var(--orange-dark);
+  padding: 12px 35px;
+  border-radius: 12px;
   border: 2px solid var(--orange);
-  box-shadow: 0 5px 15px var(--shadow);
-  opacity: 0;
-  animation: brandPop 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
-  animation-delay: 0.4s;
+  box-shadow: 0 6px 20px var(--shadow);
+  margin-bottom: 35px;
+  animation: brandPop 1.4s ease forwards;
 }
 
-/* BOUTONS VERTICAUX */
+/* BUTTON GRID */
 .buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 15px;
-  margin-top: 20px;
+  padding: 0 10px;
 }
 
 .btn {
@@ -122,44 +125,32 @@ header {
   align-items: center;
   justify-content: center;
   gap: 10px;
+  padding: 14px;
   background: var(--btn-bg);
   color: var(--btn-text);
   text-decoration: none;
-  font-weight: bold;
-  padding: 12px 20px;
-  width: 250px;
-  border-radius: 10px;
-  opacity: 0;
-  animation: fadeUp 0.8s ease forwards;
-  transition: all 0.3s ease;
+  font-weight: 600;
+  border-radius: 12px;
   box-shadow: 0 5px 15px var(--shadow);
-}
-
-.btn:hover {
-  background: var(--orange-dark);
-  transform: scale(1.08);
-  box-shadow: 0 10px 25px var(--shadow);
+  transition: 0.3s ease;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
 }
 
 .btn i {
   font-size: 1.2rem;
 }
 
-.btn:nth-child(1) { animation-delay: 0.6s; }
-.btn:nth-child(2) { animation-delay: 0.8s; }
-.btn:nth-child(3) { animation-delay: 1s; }
-.btn:nth-child(4) { animation-delay: 1.2s; }
-.btn:nth-child(5) { animation-delay: 1.4s; }
-.btn:nth-child(6) { animation-delay: 1.6s; }
-.btn:nth-child(7) { animation-delay: 1.8s; }
+.btn:hover {
+  background: var(--orange-dark);
+  transform: translateY(-3px) scale(1.03);
+}
 
 /* FOOTER */
 footer {
-  background: var(--brand-bg);
-  padding: 15px;
   text-align: center;
-  font-size: 0.9rem;
-  color: var(--text);
+  padding: 15px;
+  font-size: 0.85rem;
+  background: #fff;
   box-shadow: 0 -3px 10px var(--shadow);
 }
 
@@ -169,30 +160,29 @@ footer a {
 }
 
 /* ANIMATIONS */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(25px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes brandPop {
-  0% { opacity:0; transform:scale(0.85); box-shadow:0 0 0 rgba(242,140,40,0); }
-  70% { opacity:1; transform:scale(1.05); box-shadow:0 0 25px rgba(242,140,40,0.6); }
-  100% { transform:scale(1); box-shadow:0 0 10px rgba(242,140,40,0.3); }
+  0% { opacity:0; transform:scale(0.9); }
+  100% { opacity:1; transform:scale(1); }
 }
 
-/* RESPONSIVE */
 @media (max-width: 768px) {
-  .header-box h1 { font-size: 1.4rem; }
-  .header-box h2 { font-size: 0.95rem; }
-  .brand { font-size: 1.5rem; padding: 10px 25px; }
-  .btn { padding: 10px 16px; font-size: 0.9rem; width: 220px; }
+  .hero {
+    background-position: center top;
+  }
 }
 
 @media (max-width: 480px) {
-  .buttons { flex-direction: column; gap: 10px; }
-  .hero { padding: 100px 10px 30px; }
+  .hero {
+    background-position: center 15%;
+  }
 }
+
+  .btn {
+    padding: 12px;
+  }
+
 </style>
+
 </head>
 
 <body>

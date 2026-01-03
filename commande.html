@@ -49,46 +49,36 @@
     padding: 30px 10px;
     gap: 20px;
   }
+.category-card {
+  width: 250px;
+  height: 110px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.75);
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-  .category-card {
-    position: relative;
-    width: 250px;
-    height: 150px;
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+}
 
-  .category-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(70%);
-    transition: transform 0.4s, filter 0.3s;
-  }
+.category-card span {
+  font-size: 1.3em;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 10px 18px;
+  border-radius: 12px;
+  z-index: 2;
+  text-align: center;
+  white-space: nowrap;
+}
 
-  .category-card:hover img {
-    transform: scale(1.1);
-    filter: brightness(85%);
-  }
 
-  .category-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.5);
-  }
-
-  .category-card span {
-    position: absolute;
-    bottom: 15px;
-    left: 20px;
-    font-size: 1.5em;
-    font-weight: 700;
-    text-shadow: 3px 3px 8px rgba(0,0,0,0.7);
-    color: #fff;
-    text-transform: uppercase;
-  }
 
   /* Liste produits */
   .product-list {
@@ -161,6 +151,85 @@
     transition: background 0.3s;
   }
   .checkout-btn:hover { background: #45c65a; }
+/* Overlay coloré par catégorie */
+
+
+/* Titre catégorie */
+.category-card span {
+  z-index: 2;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+/* Couleurs par catégorie */
+.category-card[data-cat="Entrées"] span { background:#28a745; }
+.category-card[data-cat="Chawarma"] span { background:#ff6e00; }
+.category-card[data-cat="Sandwich"] span { background:#17a2b8; }
+.category-card[data-cat="Plats"] span { background:#dc3545; }
+.category-card[data-cat="Burger"] span { background:#ffc107; color:#000; }
+.category-card[data-cat="pizzas"] span { background:#fd7e14; }
+.category-card[data-cat="Sp Africaines"] span { background:#6f42c1; }
+.category-card[data-cat="Accompagnements"] span { background:#20c997; }
+.category-card[data-cat="Nos Pates"] span { background:#0d6efd; }
+.category-card[data-cat="desserts"] span { background:#e83e8c; }
+.category-card[data-cat="boissons"] span { background:#6610f2; }
+.category-card[data-cat="Jus"] span { background:#198754; }
+.category-card[data-cat="Consommation"] span { background:#343a40; }
+.category-card[data-cat="Vins"] span { background:#800020; }
+
+/* ACCORDÉON MOBILE */
+@media (max-width: 768px) {
+  .product-list {
+    padding: 10px;
+  }
+
+  .product-item {
+    flex-direction: column;
+    align-items: stretch;
+    background: rgba(255,255,255,0.08);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+
+  .product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .product-desc {
+    display: none;
+    margin-top: 8px;
+  }
+
+  .product-item.active .product-desc {
+    display: block;
+  }
+}
+.qty-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-box button {
+  background: #ff6e00;
+  border: none;
+  color: white;
+  font-size: 1.1em;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.qty-box span {
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
 
 </style>
 </head>
@@ -264,7 +333,7 @@
     {name:"Suggestion du chef", desc:"Crème, poulet, mozza, viande de boeuf, maïs doux, poivre, oignon, olives noires", price:4500},
     {name:"Pizza Guédalia", desc:"Fromage, viande hachée, poulet, crème fraîche, poivron vert, oignon, maïs doux, olive noire, thon, jambon", price:5000}
   ],
-  Spécialités_Africaines:[
+  Sp_Africaines:[
     {name:"Sauce asrokouin", desc:"", price:3000},
     {name:"Monyo", desc:"", price:3500},
     {name:"Sauce d’arachide", desc:"", price:3500},
@@ -414,22 +483,7 @@ Nos_Pates : [
     ]
   };
 
-  const categoryImages = {
-    Entrees: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80",
-    Chawarma: "https://images.unsplash.com/photo-1601924582975-4d9b1f9d7cbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Sandwich: "https://images.unsplash.com/photo-1594007659733-d1bb2f76b4f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Plats: "https://images.unsplash.com/photo-1601924573887-0b1d7d0e4a2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Burger: "https://images.unsplash.com/photo-1598514983021-9b1d7d9f5f3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    pizzas: "https://images.unsplash.com/photo-1601924573740-6ec3a1e569d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Spécialités_Africaines: "https://images.unsplash.com/photo-1598514983597-1c6f4c9b0c95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Accompagnements: "https://images.unsplash.com/photo-1598514983597-1c6f4c9b0c95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Nos_Pates: "https://images.unsplash.com/photo-1601924573605-2c1b8d9d7c0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    desserts: "https://images.unsplash.com/photo-1600185366425-90ef77d5a5bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    boissons: "https://images.unsplash.com/photo-1589923188900-9b0d5f1d530f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Jus: "https://images.unsplash.com/photo-1589923188913-2b0c7d1e2d0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Consommation: "https://images.unsplash.com/photo-1589923188898-5c0d7d2e3a1c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    Vins: "https://images.unsplash.com/photo-1598514983582-3b0c5d9d8f1e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-  };
+ 
   
    const categoriesContainer = document.getElementById('categories-container');
   const productContainer = document.getElementById('product-container');
@@ -438,17 +492,63 @@ Nos_Pates : [
 
 let cart = [];
 
-  // Créer les cartes de catégories
-  for (let category in categoryImages) {
-    const card = document.createElement('div');
-    card.classList.add('category-card');
-    card.innerHTML = `
-      <img src="${categoryImages[category]}" alt="${category}">
-      <span>${category.replace(/_/g, ' ')}</span>
-    `;
-    card.addEventListener('click', () => showProducts(category));
-    categoriesContainer.appendChild(card);
+  for (let category in products) {
+  const card = document.createElement('div');
+  card.className = 'category-card';
+  card.setAttribute('data-cat', category.replace(/_/g, ' '));
+
+  card.innerHTML = `
+    <span>${category.replace(/_/g, ' ')}</span>
+  `;
+
+  card.onclick = () => showProducts(category);
+  categoriesContainer.appendChild(card);
+}
+
+function changeQty(category, index, delta) {
+  const span = document.getElementById(`qty-${category}-${index}`);
+  let qty = parseInt(span.textContent) + delta;
+  if (qty < 0) qty = 0;
+  span.textContent = qty;
+}
+
+function addToCart(category, index) {
+  const qtySpan = document.getElementById(`qty-${category}-${index}`);
+  const qty = parseInt(qtySpan.textContent);
+
+  if (qty === 0) {
+    alert("Veuillez choisir une quantité");
+    return;
   }
+
+  const product = products[category][index];
+
+  // Gestion des prix multiples (ex: 1000/1500)
+  let unitPrice;
+  if (typeof product.price === 'number') {
+    unitPrice = product.price;
+  } else if (typeof product.price === 'string') {
+    unitPrice = parseInt(product.price.split('/')[0]);
+  } else if (Array.isArray(product.price)) {
+    unitPrice = product.price[0];
+  }
+
+  const existing = cart.find(p => p.name === product.name);
+
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    cart.push({
+      name: product.name,
+      unitPrice: unitPrice,
+      qty: qty
+    });
+  }
+
+  qtySpan.textContent = 0;
+  cartContainer.style.display = 'block';
+  renderCart();
+}
 
   // Fonction pour afficher les produits d'une catégorie
   function showProducts(category) {
@@ -463,73 +563,92 @@ let cart = [];
     products[category].forEach((prod, i) => {
       const item = document.createElement('div');
       item.classList.add('product-item');
-      item.innerHTML = `
-        <div>
-          <div class="product-name">${prod.name}</div>
-          <div class="product-desc">${prod.desc}</div>
-        </div>
-        <div>
-          <span class="product-price">${typeof prod.price === 'number' ? prod.price.toLocaleString() : prod.price} FCFA</span>
-          <button class="order-btn" data-category="${category}" data-index="${i}">Commander</button>
-        </div>
-      `;
+     item.innerHTML = `
+  <div class="product-header" onclick="this.parentElement.classList.toggle('active')">
+    <div>
+      <div class="product-name">${prod.name}</div>
+    </div>
+    <strong>${typeof prod.price === 'number' ? prod.price.toLocaleString() : prod.price} FCFA</strong>
+  </div>
+
+  <div class="product-desc">${prod.desc}</div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+    <div class="qty-box">
+      <button onclick="changeQty('${category}', ${i}, -1)">−</button>
+      <span id="qty-${category}-${i}">0</span>
+      <button onclick="changeQty('${category}', ${i}, 1)">+</button>
+    </div>
+    <button class="order-btn" onclick="addToCart('${category}', ${i})">Ajouter</button>
+  </div>
+`;
+
       list.appendChild(item);
     });
   }
 
-  // Gestion globale du clic sur "Commander"
-  document.addEventListener('click', function(e){
-    if(e.target && e.target.classList.contains('order-btn')){
-      const category = e.target.dataset.category;
-      const index = e.target.dataset.index;
-      const product = products[category][index];
-      addToCart(product);
-    }
+ 
+function renderCart() {
+  cartItemsContainer.innerHTML = '';
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    const lineTotal = item.unitPrice * item.qty;
+    total += lineTotal;
+
+    cartItemsContainer.innerHTML += `
+      <div class="cart-item">
+        <span>${item.name} × ${item.qty}</span>
+        <span>${lineTotal.toLocaleString()} FCFA</span>
+        <button onclick="removeFromCart(${index})"
+          style="background:red;color:white;border:none;border-radius:5px;padding:2px 6px;cursor:pointer;">
+          ✕
+        </button>
+      </div>
+    `;
   });
 
-  function addToCart(product) {
-    cart.push(product);
-    renderCart();
-    cartContainer.style.display = 'block';
-  }
-
-  function renderCart() {
-    cartItemsContainer.innerHTML = '';
-    cart.forEach((item, index) => {
-      const cartItem = document.createElement('div');
-      cartItem.classList.add('cart-item');
-      cartItem.innerHTML = `
-        <span>${item.name} - ${typeof item.price === 'number' ? item.price.toLocaleString() : item.price} FCFA</span>
-        <button onclick="removeFromCart(${index})" style="background:red;color:white;border:none;border-radius:5px;padding:2px 8px;cursor:pointer;">X</button>
-      `;
-      cartItemsContainer.appendChild(cartItem);
-    });
-  }
+  cartItemsContainer.innerHTML += `
+    <hr>
+    <strong>Total : ${total.toLocaleString()} FCFA</strong>
+  `;
+}
 
   function removeFromCart(index) {
-    cart.splice(index,1);
-    renderCart();
-    if(cart.length === 0) cartContainer.style.display = 'none';
-  }
+  cart.splice(index,1);
+  renderCart();
+  if(cart.length === 0) cartContainer.style.display = 'none';
+}
+
 
   // Checkout
   document.getElementById('checkout-btn').addEventListener('click', () => {
-    if(cart.length === 0) { alert('Votre panier est vide !'); return; }
+  if (cart.length === 0) {
+    alert('Votre panier est vide !');
+    return;
+  }
 
-    const total = cart.reduce((sum, item) => sum + (typeof item.price === 'number' ? item.price : parseInt(item.price.split('/')[0])), 0);
-    const choice = prompt(`Total: ${total.toLocaleString()} FCFA\nChoisissez le mode de paiement:\n1 = Momo\n2 = Espèce`);
+  const total = cart.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
 
-    if(choice === '1') {
-      const text = encodeURIComponent(`Bonjour, je voudrais commander:\n` +
-        cart.map(p => `${p.name} - ${typeof p.price === 'number' ? p.price.toLocaleString() : p.price} FCFA`).join('\n') +
-        `\nTotal: ${total.toLocaleString()} FCFA`);
-      window.open(`https://wa.me/22921359583?text=${text}`, '_blank');
-    } else if(choice === '2') {
-      alert('Merci ! Vous pouvez payer en espèce à la livraison.');
-    } else {
-      alert('Option invalide.');
-    }
-  });
+  const choice = prompt(
+    `Total : ${total.toLocaleString()} FCFA\n` +
+    `Choisissez le mode de paiement :\n1 = Momo\n2 = Espèce`
+  );
+
+  if (choice === '1') {
+    const text = encodeURIComponent(
+      `Bonjour, je voudrais commander :\n\n` +
+      cart.map(i => `${i.name} × ${i.qty} = ${(i.unitPrice * i.qty).toLocaleString()} FCFA`).join('\n') +
+      `\n\nTOTAL : ${total.toLocaleString()} FCFA`
+    );
+    window.open(`https://wa.me/22921359583?text=${text}`, '_blank');
+  } else if (choice === '2') {
+    alert('Merci ! Paiement en espèce à la livraison.');
+  } else {
+    alert('Option invalide');
+  }
+});
+
 </script>
 
 </body>
